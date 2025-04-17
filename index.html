@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parking Card Balance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1> Parking Card System (Narak's RUPP Mz Card)</h1>
+
+  <h2><p>Balance: <span id="balance">10000</span> ៛</p></h2>
+
+  <div class="section">
+    <h3>✏️ Edit Balance</h3>
+    <input type="number" id="edit-balance" placeholder="Enter new balance">
+    <button onclick="setBalance()">Update Balance</button>
+  </div>
+<div class="section">
+  <input type="number" id="amount" placeholder="Enter amount" step="0.01">
+  <button onclick="topUp()">Top Up</button>
+  <button onclick="deduct()">Pay for Parking</button>
+  <button onclick="resetAll()">Reset All</button>
+  <button onclick="exportToTxt()">Export History (.txt)</button>
+  <button onclick="exportToCSV()">Export History (.csv)</button>
+</div>
+
+  <div class="section">
+    <h3>📥 Top-up History</h3>
+    <ul id="topup-log"></ul>
+  </div>
+
+  <div class="section">
+    <h3>🕒 Parking Payment History</h3>
+    <ul id="deduct-log"></ul>
+  </div>
+
+  <div class="section">
+    <h3>✏️ Manual Balance Edits</h3>
+    <ul id="edit-log"></ul>
+  </div>
+
+  <script>
+    let balance = 0;
+    let topupHistory = [];
+    let deductHistory = [];
+    let editHistory = []; // Array to store edit history
+
+    function updateBalance() {
+      document.getElementById("balance").textContent = balance.toFixed(0);
+      localStorage.setItem("balance", balance);
+    }
+
+    function topUp() {
+      let amount = parseFloat(document.getElementById("amount").value);
+      if (!isNaN(amount) && amount > 0) {
+        balance += amount;
+        updateBalance();
+
+        const now = new Date().toLocaleString();
+        topupHistory.unshift({ amount, time: now });
+        localStorage.setItem("topupHistory", JSON.stringify(topupHistory));
+
+        renderHistory();
+      }
+      document.getElementById("amount").value = "";
+    }
+
+    function deduct() {
+      let amount = parseFloat(document.getElementById("amount").value);
+      if (!isNaN(amount) && amount > 0) {
+        if (balance >= amount) {
+          balance -= amount;
+          updateBalance();
+
+          const now = new Date().toLocaleString();
+          deductHistory.unshift({ amount, time: now });
+          localStorage.setItem("deductHistory", JSON.stringify(deductHistory));
+
+          renderHistory();
+        } else {
+          alert("Not enough balance.");
+        }
+      }
+      document.getElementById("amount").value = "";
+    }
+
+    function renderHistory() {
+      const topupList = document.getElementById("topup-log");
+      const deductList = document.getElementById("deduct-log");
+      const editList = document.getElementById("edit-log");
+
+      topupList.innerHTML = "";
+      deductList.innerHTML = "";
+      editList.innerHTML = "";
+
+      topupHistory.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `Topped up ${entry.amount.toFixed(0)} ៛ on ${entry.time}`;
+        topupList.appendChild(li);
+      });
+
+      deductHistory.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `Paid ${entry.amount.toFixed(0)} ៛ on ${entry.time}`;
+        deductList.appendChild(li);
+      });
+
+      editHistory.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `Changed from ${entry.oldBalance.toFixed(0)} ៛ to ${entry.newBalance.toFixed(0)} ៛ on ${entry.time}`;
+        editList.appendChild(li);
+      });
+    }
+
+    function resetAll() {
+      if (confirm("Are you sure you want to reset everything?")) {
+        localStorage.clear();
+        balance = 10000;
+        topupHistory = [];
+        deductHistory = [];
+        editHistory = [];
+        updateBalance();
+        renderHistory();
+      }
+    }
+
+    function exportToTxt() {
+      let text = "Top-up History:\n";
+      topupHistory.forEach(entry => {
+        text += `+ ${entry.amount} ៛ on ${entry.time}\n`;
+      });
+
+      text += "\nParking Payment History:\n";
+      deductHistory.forEach(entry => {
+        text += `- ${entry.amount} ៛ on ${entry.time}\n`;
+      });
+
+      text += "\nBalance Edit History:\n";
+      editHistory.forEach(entry => {
+        text += `Changed from ${entry.oldBalance} ៛ to ${entry.newBalance} ៛ on ${entry.time}\n`;
+      });
+
+      downloadFile("parking_history.txt", text);
+    }
+
+    function exportToCSV() {
+      let csv = "Type,Amount (៛),Time\n";
+
+      topupHistory.forEach(entry => {
+        csv += `Top-up,${entry.amount},${entry.time}\n`;
+      });
+
+      deductHistory.forEach(entry => {
+        csv += `Payment,${entry.amount},${entry.time}\n`;
+      });
+
+      csv += "Edit,Old Balance (៛),New Balance (៛),Time\n";
+      editHistory.forEach(entry => {
+        csv += `Edit,${entry.oldBalance},${entry.newBalance},${entry.time}\n`;
+      });
+
+      downloadFile("parking_history.csv", csv);
+    }
+
+    function downloadFile(filename, content) {
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    }
+
+    function loadData() {
+      const savedBalance = localStorage.getItem("balance");
+      const savedTopup = localStorage.getItem("topupHistory");
+      const savedDeduct = localStorage.getItem("deductHistory");
+      const savedEdit = localStorage.getItem("editHistory");
+
+      balance = savedBalance ? parseFloat(savedBalance) : 10000;
+      topupHistory = savedTopup ? JSON.parse(savedTopup) : [];
+      deductHistory = savedDeduct ? JSON.parse(savedDeduct) : [];
+      editHistory = savedEdit ? JSON.parse(savedEdit) : [];
+
+      updateBalance();
+      renderHistory();
+    }
+
+    function setBalance() {
+      const newBalance = parseFloat(document.getElementById("edit-balance").value);
+      if (!isNaN(newBalance) && newBalance >= 0) {
+        const now = new Date().toLocaleString();
+        const oldBalance = balance;
+
+        balance = newBalance;
+        updateBalance();
+
+        editHistory.unshift({ oldBalance, newBalance, time: now });
+        localStorage.setItem("editHistory", JSON.stringify(editHistory));
+
+        renderHistory();
+        alert("Balance updated!");
+      } else {
+        alert("Please enter a valid number.");
+      }
+      document.getElementById("edit-balance").value = "";
+    }
+
+    loadData();
+  </script>
+
+</body>
+</html>
