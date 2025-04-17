@@ -1,69 +1,159 @@
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 900px;
-  margin: auto;
-  background: #f0f4f8;
-}
-
-h2 {
-  text-align: center;
-  color: #2c3e50;
-}
-
-input,
-button {
-  padding: 10px;
-  margin-bottom: 10px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-button {
-  cursor: pointer;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-.section {
-  margin-top: 20px;
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.section + .section {
-  margin-top: 30px;
-}
-
-h3 {
-  margin-top: 0;
-  color: #34495e;
-  font-weight: 600;
-}
-
-ul {
-  padding-left: 20px;
-}
-
-ul li {
-  margin-bottom: 5px;
-}
-
-/* Responsive Layout */
-@media screen and (min-width: 600px) {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    background: #f0f4f8;
+  }
+  
+  h1 {
+    font-size: 3rem;  /* Even bigger header for mobile */
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.5rem;  /* Increased font size */
+  }
+  
   input,
   button {
-    width: auto;
-    display: inline-block;
-    margin-right: 10px;
+    padding: 25px;  /* Increased padding */
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 2rem;  /* Increased font size */
   }
-}
+  
+  button {
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 12px;  /* More rounded buttons */
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  .section {
+    margin-top: 30px;
+    background: #ffffff;
+    padding: 30px;  /* Increased padding inside sections */
+    border-radius: 15px;  /* More rounded corners */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .section + .section {
+    margin-top: 50px;
+  }
+  
+  h3 {
+    margin-top: 0;
+    color: #34495e;
+    font-weight: 600;
+    font-size: 2.2rem;  /* Increased size of sub-headings */
+  }
+  
+  ul {
+    padding-left: 20px;
+  }
+  
+  ul li {
+    margin-bottom: 20px;  /* Increased space between list items */
+    font-size: 2rem;  /* Larger font for list items */
+  }
+  
+  /* Flexbox layout for buttons and input */
+  .flex-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;  /* Increased gap between buttons and inputs */
+    justify-content: space-between;
+  }
+  
+  .flex-group input,
+  .flex-group button {
+    width: 48%;
+  }
+  
+  /* Mobile styles for smaller screens */
+  @media only screen and (max-width: 600px) {
+    body {
+      padding: 25px;
+    }
+  
+    h1 {
+      font-size: 2.8rem;  /* Even bigger header */
+    }
+  
+    h2 {
+      font-size: 2.2rem;
+    }
+  
+    .section {
+      padding: 35px;  /* More padding inside sections */
+    }
+  
+    input,
+    button {
+      font-size: 2.5rem;  /* Even larger text */
+      padding: 30px;  /* Larger padding */
+      margin-bottom: 25px;
+    }
+  
+    h3 {
+      font-size: 2.5rem;  /* Larger sub-headings */
+    }
+  
+    ul li {
+      font-size: 2.2rem;  /* Larger font for list items */
+    }
+  
+    .flex-group {
+      flex-direction: column;
+    }
+  
+    .flex-group input,
+    .flex-group button {
+      width: 100%;
+    }
+  }
+  
+  @media only screen and (max-width: 400px) {
+    body {
+      padding: 15px;
+    }
+  
+    h1 {
+      font-size: 3.2rem;  /* Larger header for very small screens */
+    }
+  
+    h2 {
+      font-size: 2.5rem;
+    }
+  
+    .section {
+      padding: 40px;  /* Increased padding inside sections */
+    }
+  
+    input,
+    button {
+      font-size: 2.8rem;  /* Much larger text */
+      padding: 35px;  /* Even larger padding */
+      margin-bottom: 30px;
+    }
+  
+    h3 {
+      font-size: 3rem;  /* Increased sub-heading font size */
+    }
+  
+    ul li {
+      font-size: 2.5rem;  /* Even larger font for list items */
+    }
+  }
+  
