@@ -3,27 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Parking Card Balance</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Parking_card_balance.css">
 </head>
 <body>
 
-  <h1> Parking Card System (Narak's RUPP Mz Card)</h1>
+  <h1> Parking Card System <br>(Narak's RUPP Mz Card)</h1>
 
   <h2><p>Balance: <span id="balance">10000</span> ៛</p></h2>
 
+  
   <div class="section">
     <h3>✏️ Edit Balance</h3>
     <input type="number" id="edit-balance" placeholder="Enter new balance">
     <button onclick="setBalance()">Update Balance</button>
   </div>
-<div class="section">
-  <input type="number" id="amount" placeholder="Enter amount" step="0.01">
-  <button onclick="topUp()">Top Up</button>
-  <button onclick="deduct()">Pay for Parking</button>
-  <button onclick="resetAll()">Reset All</button>
-  <button onclick="exportToTxt()">Export History (.txt)</button>
-  <button onclick="exportToCSV()">Export History (.csv)</button>
-</div>
+
+  <div class="section flex-group">
+    <input type="number" id="amount" placeholder="Enter amount" step="0.01">
+    <button onclick="topUp()">Top Up</button>
+    <button onclick="deduct()">Pay for Parking</button>
+    <button onclick="resetAll()">Reset All</button>
+    <button onclick="exportToTxt()">Export History (.txt)</button>
+    <button onclick="exportToCSV()">Export History (.csv)</button>
+  </div>
 
   <div class="section">
     <h3>📥 Top-up History</h3>
