@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Parking Card Balance</title>
-  <link rel="stylesheet" href="Parking_card_balance.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -118,7 +118,7 @@
     function resetAll() {
       if (confirm("Are you sure you want to reset everything?")) {
         localStorage.clear();
-        balance = 0;
+        balance = 10000;
         topupHistory = [];
         deductHistory = [];
         editHistory = [];
